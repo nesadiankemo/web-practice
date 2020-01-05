@@ -1,0 +1,190 @@
+<html>
+  <head>
+    <title>DOM Tests</title>
+    <script type="application/javascript">
+      function setBodyAttr(attr, value) {
+        if (document.body) eval('document.body.' + attr + '="' + value + '"');
+        else notSupported();
+      }
+    </script>
+    <link rel="stylesheet" href="loading.css">
+    <style>
+          .spining {
+          animation-duration: 1.5s;
+          animation-name: spining;
+          animation-iteration-count: infinite;
+      }
+
+      @keyframes spining {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+      }
+      .ring {
+        position: relative;
+        width: 80px;
+        height: 80px;
+        border-radius: 40px;
+        background: conic-gradient(white, rgb(100, 100, 100));
+      }
+    
+      .inner-round {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+        background: white;
+        top: 50%;
+        left: 50%;
+        margin-left: -25px;
+        margin-top: -25px;
+      }
+    </style>
+  </head> 
+  <body>
+    <div id="panel" style="margin: .5in; height: 400;"> 
+      <p><b><tt>text</tt>color</b></p> 
+      <form> 
+        <select onChange="setBodyAttr('text',
+        this.options[this.selectedIndex].value);"> 
+          <option value="black">black 
+          <option value="darkblue">darkblue 
+        </select>
+        <p><b><tt>bgColor</tt></b></p>
+        <select onChange="setBodyAttr('bgColor',
+        this.options[this.selectedIndex].value);"> 
+          <option value="white">white 
+          <option value="lightgrey">gray
+        </select>
+        <p><b><tt>link</tt></b></p> 
+        <select onChange="setBodyAttr('link',
+        this.options[this.selectedIndex].value);">
+          <option value="blue">blue
+          <option value="green">green
+        </select>  <small>
+        <a href="http://www.brownhen.com/dom_api_top.html" id="sample">
+        (sample link)</a></small><br>
+      </form>
+      <form>
+        <input type="button" value="version" onclick="ver()" />
+      </form>
+    </div>
+
+    <!-- <div style="width: 500px; overflow: hidden;">
+      <p id="animation">
+        The Caterpillar and Alice looked at each other for some time in silence:
+        at last the Caterpillar took the hookah out of its mouth, and addressed
+        her in a languid, sleepy voice.
+      </p>
+    </div> -->
+
+    <button onclick="showLoading_dotspin()">loading</button>
+    <style>
+      #test-div {
+        margin: 10px;
+      }
+
+      p#animation {
+        animation-duration: 3s;
+        animation-name: slidein;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+      }
+
+      @keyframes slidein {
+        from {
+          margin-left: 100%;
+          width: 300%;
+        }
+
+        75% {
+          font-size: 300%;
+          margin-left: 25%;
+          width: 150%;
+        }
+
+        to {
+          margin-left: 0%;
+          width: 100%;
+        }
+      }
+    </style>
+    <script>
+      function showLoading_dotspin () {
+        var loadingEl = document.createElement('div');
+        var parentEl = document.getElementById('panel')
+        if (parentEl.$loadingEl) {
+          parentEl.$loadingEl.style.display = 'block';
+          return;
+        }
+
+        loadingEl.className = 'loading-cover';
+        var span = document.createElement('span');
+        span.className = 'dot-spin-loading';
+        loadingEl.appendChild(span);
+
+        
+        for (let i = 0; i < 16; i++) {
+          let dotEl = document.createElement('div');
+          let inner = document.createElement('span');
+          dotEl.className = 'spin-wrap';
+          dotEl.appendChild(inner);
+          span.appendChild(dotEl);
+        }
+        parentEl.appendChild(loadingEl);
+
+        loadingEl.addEventListener('click', (event) => {
+          loadingEl.style.display = 'none';
+        })
+      }
+      function showLoading() {
+        const loading = document.createElement('div');
+        var parentEl = document.body.parentElement;
+        if (parentEl.$loading) {
+          parentEl.$loading.style.display = 'block';
+          return;
+        }
+        loading.setAttribute('style', 'background: rgba(250, 250, 250, .9); z-index: 100;\
+                              position: absolute; top: 0; left: 0;\
+                              text-align: center;');
+        // var textNode = document.createTextNode('loading...');
+        var textspan = document.createElement('span');
+        // textspan.appendChild(textNode);
+        textspan.setAttribute('style', 'position: absolute; top: 50%; left: 50%;');
+        
+        // loading.appendChild(textspan);
+        // loading.setAttribute('class', 'loading active');
+        // console.log(loading.getAttribute('class'));
+        var spinEl = document.createElement('div');
+        spinEl.className = 'ring spining';
+        var spinInner = document.createElement('div');
+        spinInner.className = 'inner-round';
+        spinEl.appendChild(spinInner);
+        textspan.appendChild(spinEl);
+        loading.appendChild(textspan);
+        parentEl.style.position = 'relative';//('position', 'relative');
+        parentEl.appendChild(loading);console.log('computestyle', window.getComputedStyle(textspan).height);
+        loading.style.width = '100%';
+        loading.style.height = '100%';
+        console.log(textspan.offsetHeight);
+        console.log(textspan.height);
+        let ml = textspan.offsetWidth / 2;
+        let mt = textspan.offsetHeight / 2;
+        textspan.style.marginTop = `-${mt}px;`;
+        textspan.style.marginLeft = `-${ml}px`;
+        
+        loading.addEventListener('click', (event) => {
+          loading.style.display = 'none';
+        })
+        parentEl.$loading = loading;
+        setTimeout(() => {
+          // parentEl.removeChild(loading);
+        }, 4000);
+      }
+    </script>
+  </body>
+</html>
